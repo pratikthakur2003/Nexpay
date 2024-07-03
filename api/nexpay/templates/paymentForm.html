@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Page</title>
+  <link rel="stylesheet" href="{{ url_for('nexpay.static', filename='css/paymentForm.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="tabs">
+      <div class="tab active" data-target="netbanking">Net Banking</div>
+      <div class="tab" data-target="creditcard">Credit Card</div>
+      <div class="tab" data-target="debitcard">Debit Card</div>
+      <div class="tab" data-target="upi">UPI</div>
+    </div>
+    <form id="paymentForm" action="/nexpay/api/contact_bank" method="post">
+      <div class="content active" id="netbanking">
+        <label for="bank">Choose your Bank:</label>
+        <select id="bank" name="bank">
+          <option value="abc">ABC Bank</option>
+          <option value="mno">MNO Bank</option>
+          <option value="xyz">XYZ Bank</option>
+        </select>
+      </div>
+      <div class="content" id="creditcard">
+        <label for="creditCardBrand">Choose your Credit Card Brand:</label>
+        <select id="creditCardBrand" name="creditCardBrand">
+          <option id="abc" value="abc">ABC</option>
+          <option id="mno" value="mno">MNO</option>
+          <option id="xyz" value="xyz">XYZ</option>
+        </select>
+      </div>
+      <div class="content" id="debitcard">
+        <label for="debitCardBrand">Choose your Debit Card Brand:</label>
+        <select id="debitCardBrand" name="debitCardBrand">
+          <option id="abc" value="abc">ABC</option>
+          <option id="mno" value="mno">MNO</option>
+          <option id="xyz" value="xyz">XYZ</option>
+        </select>
+      </div>
+      <div class="content" id="upi">
+        <label for="upi">UPI ID:</label>
+        <input type="text" id="upi" name="upi" placeholder="Enter your UPI ID">
+      </div>
+      <input type="hidden" class="hiddenData" name="token" value="{{ token }}">
+      <input type="hidden" class="hiddenData" name="orderID" value="{{ orderID }}">
+      <input type="hidden" class="hiddenData" name="amount" value="{{ amount }}">
+      <button type="submit" class="pay-now">Pay Now (₹{{ amount }})</button>
+    </form>
+  </div>
+
+  <script src="{{ url_for('nexpay.static', filename='js/paymentForm.js') }}"></script>
+</body>
+</html>

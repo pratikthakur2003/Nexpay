@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ bankName }} Payment</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href= "{{ url_for('bank.static', filename='css/bankMain.css') }}" >
+    <style>
+      
+    </style>
+  </head>
+  <body>   
+    <h1>{{ bankName }}</h1>
+    <h2>Welcome, {{ user }}</h2>
+    <div class="form-container">
+      <form>
+        <div class="mb-3 row">
+          <label for="staticAmount" class="col-sm-4 col-form-label form-label">Amount</label>
+          <div class="col-sm-8">
+            <input type="text" readonly class="form-control-plaintext" id="staticAmount" value="₹ {{ amount }}">
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="accountNo" class="col-sm-4 col-form-label form-label">Account No</label>
+          <div class="col-sm-8">
+            <input type="text" class="form-control" id="accountNo" placeholder="Enter your account number" required>
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="transactionPassword" class="col-sm-4 col-form-label form-label">Transaction Password</label>
+          <div class="col-sm-8">
+            <input type="password" class="form-control" id="transactionPassword" placeholder="Enter your transaction password" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Pay Now</button>
+      </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  </body>
+</html>
