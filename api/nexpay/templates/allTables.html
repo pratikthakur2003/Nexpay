@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Data</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #bac7da;
+      padding-top: 20px;
+    }
+    .container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      margin-top: 30px;
+      max-width: 95%; /* Limit container width */
+    }
+    h1 {
+      margin-bottom: 30px;
+      text-align: center;
+      color: #007bff;
+    }
+    .table-responsive {
+      overflow-x: auto;
+    }
+    .table {
+      min-width: 100%; /* Ensure table occupies full width */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Merchant Data</h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Merchant ID</th>
+            <th scope="col">API Key</th>
+            <th scope="col">Merchant Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Password</th>
+            <th scope="col">Balance</th>
+            <th scope="col">Time Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for merchant in merchantData %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ merchant[1] }}</td>
+            <td>{{ merchant[2] }}</td>
+            <td>{{ merchant[3] }}</td>
+            <td>{{ merchant[4] }}</td>
+            <td>{{ merchant[5] }}</td>
+            <td>{{ merchant[6] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>Ledger</h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Ledger ID</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Merchant ID</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Mode</th>
+            <th scope="col">Status</th>
+            <th scope="col">Transaction Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for l in ledger %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ l[1] }}</td>
+            <td>{{ l[2] }}</td>
+            <td>{{ l[3] }}</td>
+            <td>{{ l[4] }}</td>
+            <td>{{ l[5] }}</td>
+            <td>{{ l[6] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>Orders</h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Sr. No</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">API Key</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Currency</th>
+            <th scope="col">CallbackURL</th>
+            <th scope="col">Time Created</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for o in orders %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ o[1] }}</td>
+            <td>{{ o[2] }}</td>
+            <td>{{ o[3] }}</td>
+            <td>{{ o[4] }}</td>
+            <td>{{ o[5] }}</td>
+            <td>{{ o[6] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>Tokens</h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Token ID</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Token</th>
+            <th scope="col">Time Created</th>
+            <th scope="col">Expiration Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in tokens %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ t[1] }}</td>
+            <td>{{ t[2] }}</td>
+            <td>{{ t[3] }}</td>
+            <td>{{ t[4] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr />
+  <h1 style = "color:black"> BANK DATA </h1>
+  <hr />
+
+  <div class="container">
+    <h1>ABC Bank</h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Account ID</th>
+            <th scope="col">Account No</th>
+            <th scope="col">Account Password</th>
+            <th scope="col">Transaction Password</th>
+            <th scope="col">Account Name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Credit Card No</th>
+            <th scope="col">UPI ID</th>
+            <th scope="col">Debit Card No</th>
+            <th scope="col">Account Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for abc in abcBank %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ abc[1] }}</td>
+            <td>{{ abc[2] }}</td>
+            <td>{{ abc[3] }}</td>
+            <td>{{ abc[4] }}</td>
+            <td>{{ abc[5] }}</td>
+            <td>{{ abc[6] }}</td>
+            <td>{{ abc[7] }}</td>
+            <td>{{ abc[8] }}</td>
+            <td>{{ abc[9] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>MNO Bank</h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Account ID</th>
+            <th scope="col">Account No</th>
+            <th scope="col">Account Password</th>
+            <th scope="col">Transaction Password</th>
+            <th scope="col">Account Name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Credit Card No</th>
+            <th scope="col">UPI ID</th>
+            <th scope="col">Debit Card No</th>
+            <th scope="col">Account Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for mno in mnoBank %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ mno[1] }}</td>
+            <td>{{ mno[2] }}</td>
+            <td>{{ mno[3] }}</td>
+            <td>{{ mno[4] }}</td>
+            <td>{{ mno[5] }}</td>
+            <td>{{ mno[6] }}</td>
+            <td>{{ mno[7] }}</td>
+            <td>{{ mno[8] }}</td>
+            <td>{{ mno[9] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>XYZ Bank</h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Account ID</th>
+            <th scope="col">Account No</th>
+            <th scope="col">Account Password</th>
+            <th scope="col">Transaction Password</th>
+            <th scope="col">Account Name</th>
+            <th scope="col">Username</th>
+            <th scope="col">Credit Card No</th>
+            <th scope="col">UPI ID</th>
+            <th scope="col">Debit Card No</th>
+            <th scope="col">Account Balance</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for xyz in xyzBank %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ xyz[1] }}</td>
+            <td>{{ xyz[2] }}</td>
+            <td>{{ xyz[3] }}</td>
+            <td>{{ xyz[4] }}</td>
+            <td>{{ xyz[5] }}</td>
+            <td>{{ xyz[6] }}</td>
+            <td>{{ xyz[7] }}</td>
+            <td>{{ xyz[8] }}</td>
+            <td>{{ xyz[9] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1>Transactions</h1>
+    <div class="table-responsive">
+      <table class="table table-hover table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Transaction ID</th>
+            <th scope="col">Order ID</th>
+            <th scope="col">Token</th>
+            <th scope="col">Amount</th>
+            <th scope="col">UserName</th>
+            <th scope="col">Mode</th>
+            <th scope="col">Bank ID</th>
+            <th scope="col">Bank Name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Transaction Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tr in transactions %}
+          <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ tr[1] }}</td>
+            <td>{{ tr[2] }}</td>
+            <td>{{ tr[3] }}</td>
+            <td>{{ tr[4] }}</td>
+            <td>{{ tr[5] }}</td>
+            <td>{{ tr[6] }}</td>
+            <td>{{ tr[7] }}</td>
+            <td>{{ tr[8] }}</td>
+            <td>{{ tr[9] }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS and dependencies (jQuery) for dynamic loading -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

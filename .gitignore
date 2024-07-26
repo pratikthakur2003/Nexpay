@@ -1,0 +1,8 @@
+# Ignore the virtual environment folder
+.env
+# Ignore Python bytecode files
+*.pyc
+__pycache__/
+# Ignore VS Code settings folder
+.vscode/
+flask_session

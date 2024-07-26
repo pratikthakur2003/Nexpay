@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      {% if cardNo == "debitCardNo" %} Debit Card Payment {% else %} Credit card
+      Payment {% endif %}
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('bank.static', filename='css/card.css') }}"
+    />
+    <style></style>
+  </head>
+  <body>
+    <h1>{{ cardBrand }}</h1>
+    <div class="form-container">
+      {% if error %}
+      <div class="alert alert-danger mt-3">{{ error }}</div>
+      {% endif %}
+      <form action= "{% if cardNo == 'debitCardNo' %}/bank/api/debitcard{% else %}/bank/api/creditcard{% endif %}" method="post">
+        <div class="mb-3 row">
+          <label for="staticAmount" class="col-sm-4 col-form-label form-label"
+            >Amount</label
+          >
+          <div class="col-sm-8">
+            <input
+              type="text"
+              readonly
+              class="form-control-plaintext"
+              name="amount"
+              value="₹ {{ amount }}"
+            />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="{{ cardNo }}" class="col-sm-4 col-form-label form-label"
+            >{% if cardNo == "debitCardNo" %} Debit Card No {% else %} Credit
+            Card No {% endif %}</label
+          >
+          <div class="col-sm-8">
+            <input
+              id="{{ cardNo }}"
+              type="text"
+              class="form-control"
+              name="{{ cardNo }}"
+              placeholder="Enter your Debit Card Number"
+              required
+            />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="expiryDate" class="col-sm-4 col-form-label form-label"
+            >Expiry Date</label
+          >
+          <div class="col-sm-8">
+            <input
+              id="expiryDate"
+              type="text"
+              class="form-control"
+              name="expiryDate"
+              placeholder="Enter your Expiry Date"
+              onkeypress="expiryDateControl()"
+              maxlength="5"
+              required
+            />
+          </div>
+        </div>
+        <div class="mb-3 row">
+          <label for="cvv" class="col-sm-4 col-form-label form-label"
+            >CVV</label
+          >
+          <div class="col-sm-8">
+            <input
+              id="cvv"
+              type="password"
+              class="form-control"
+              name="cvv"
+              placeholder="Enter your CVV"
+              maxlength="3"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Pay Now</button>
+      </form>
+    </div>
+    <script src="{{ url_for('bank.static', filename='js/card.js') }}"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
