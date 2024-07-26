@@ -25,7 +25,10 @@
       {% if error %}
       <div class="alert alert-danger mt-3">{{ error }}</div>
       {% endif %}
-      <form action= "{% if cardNo == 'debitCardNo' %}/bank/api/debitcard{% else %}/bank/api/creditcard{% endif %}" method="post">
+      <form
+        action="{% if cardNo == 'debitCardNo' %}/bank/api/debitcard{% else %}/bank/api/creditcard{% endif %}"
+        method="post"
+      >
         <div class="mb-3 row">
           <label for="staticAmount" class="col-sm-4 col-form-label form-label"
             >Amount</label
@@ -51,7 +54,7 @@
               type="text"
               class="form-control"
               name="{{ cardNo }}"
-              placeholder="Enter your Debit Card Number"
+              placeholder="Enter your {% if cardNo == 'debitCardNo' %}Debit{% else %}Credit{% endif %} Card Number"
               required
             />
           </div>

@@ -1,161 +1,11 @@
 from flask import jsonify, render_template, redirect, url_for, request, session, flash
-from mysql.connector import pooling, Error
 from flask_login import login_user, logout_user, current_user, login_required
 from datetime import datetime
 from api.bank import bank
 from api.bank.hash import decrypt
 from app.models import abcBankUser, mnoBankUser, xyzBankUser
 from decimal import Decimal
-import requests
-
-db_configs = {
-    "banks_db": {
-        "host": "localhost",
-        "user": "root",
-        "password": "pratik",
-        "database": "banks_db"  
-    },
-    "othermodes_db": {
-        "host": "localhost",
-        "user": "root",
-        "password": "pratik",
-        "database": "othermodes_db"
-    }
-}
-
-pools = {
-    "banks": pooling.MySQLConnectionPool(pool_name="banks_pool", pool_size=10, **db_configs["banks_db"]),
-    "othermodes": pooling.MySQLConnectionPool(pool_name="othermodes_pool", pool_size=10, **db_configs["othermodes_db"]),
-}
-
-def get_db_connection(dbName):
-    try:
-        return pools[dbName].get_connection()
-    except Error as e:
-        print(f'Error: {e}')
-        return None
-
-def retrieve_data(data):
-    params = data.split('&')
-    data_dict = {key: value for key, value in (param.split('=') for param in params)}
-    return data_dict
-
-def getBankName(bankID):
-    banks = {
-        "abc": "ABC Bank",
-        "mno": "MNO Bank",
-        "xyz": "XYZ Bank",
-    }
-    return banks.get(bankID)
-
-def getExpirationTime(expirationTime):
-    return datetime.strptime(expirationTime, '%Y-%m-%d %H:%M:%S')
-
-def createBankTransactionEntry(userName = "-", bankID = "-"):
-    conn = get_db_connection("banks")
-    cursor = conn.cursor()
-    
-    orderID = session['mode_info'].get('orderID')
-    token = session['mode_info'].get('token')
-    amount = Decimal(session['mode_info'].get('amount'))
-    mode = session['mode_info'].get('mode')
-    bankName = getBankName(bankID) if bankID != "-" else "-"
-    tableName = "transactions"
-    status = "pending"
-    
-    transactionSql = f"INSERT INTO {tableName} (orderID, token, amount, username, mode, bankID, bankName, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
-    cursor.execute(transactionSql, (orderID, token, amount, userName, mode, bankID, bankName, status))
-    
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-def updateBankTransactionEntry(status):
-    conn = get_db_connection("banks")
-    cursor = conn.cursor()
-    
-    token = session["mode_info"].get('token')
-    
-    transactionSql = "UPDATE transactions SET status = %s WHERE token = %s"
-    cursor.execute(transactionSql, (status, token))
-    
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-def notifyNexpay(status):
-    
-    session['status'] = status
-    return redirect('/nexpay/api/recieve_from_bank')
-    
-
-def handleWithdrawal(mode,
-    mode_name,
-    mode_no,
-    current_balance,
-    amount,
-    tableName,
-    columnName = "accountBalance"
-):
-    conn = get_db_connection(f"{mode}")
-    cursor = conn.cursor()
-
-    # new_balance = current_user.accountBalance - amount
-    new_balance = current_balance - amount
-    
-    # cursor.execute(f"UPDATE {session['mode_info'].get('data')} SET accountBalance = {new_balance} WHERE accountID = {current_user.accountID}")
-    cursor.execute(f"UPDATE {tableName} SET {columnName} = {new_balance} WHERE {mode_name} = {mode_no}")
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    updateBankTransactionEntry(status = "success")
-
-    logout_user()
-
-    return notifyNexpay(status = "success")
-
-def getCardDetails(
-    tableName,
-    inputCardNo,
-    inputExpiryDate,
-    inputCVV
-):
-    conn = get_db_connection('othermodes')
-    cursor = conn.cursor(dictionary=True)
-    
-    columnName = "debitCardNo" if tableName == "debitcard" else "creditCardNo"
-    
-    sql = f"SELECT * FROM {tableName} WHERE {columnName} = %s AND expiryDate = %s AND cvv = %s"
-    
-    cursor.execute(sql, (inputCardNo, inputExpiryDate, inputCVV))
-    
-    res = cursor.fetchone()
-    
-    cursor.close()
-    conn.close()
-    
-    return res
-
-def getCurrentBalanceAndUserName(mode, mode_no, bankName):
-    conn = get_db_connection('banks')
-    cursor = conn.cursor(dictionary=True)
-    
-    sql = f"SELECT username, accountBalance FROM {bankName} WHERE {mode} = {mode_no}"
-    
-    cursor.execute(sql)
-    
-    res = cursor.fetchone()
-    
-    cursor.close()
-    conn.close()
-    
-    if not res:
-        return None
-    
-    return {"userName": res['username'], "accountBalance": res['accountBalance']}
-    
-        
+import api.bank.utils as utils
 
 @bank.route('/')
 def index():
@@ -164,7 +14,7 @@ def index():
         try:
             params = request.args.get('q')
             original_data = decrypt.decrypt_data(params)
-            details = retrieve_data(original_data)
+            details = utils.retrieve_data(original_data)
             print(details)
             
             if not details:
@@ -193,10 +43,10 @@ def netBankingLogin():
         return jsonify({"status": "failed", "description": "Session data missing"}), 400
     
     if request.method == 'GET':
-        bankName = getBankName(session['mode_info'].get('data'))
+        bankName = utils.getBankName(session['mode_info'].get('data'))
         session['bankName'] = bankName
                 
-        expirationTime = getExpirationTime(session['mode_info'].get('expirationTime'))
+        expirationTime = utils.getExpirationTime(session['mode_info'].get('expirationTime'))
         if expirationTime > datetime.now():
             return render_template('bankLogin.html', bankName = session['bankName'])
         return jsonify({"status": "failed", "description": "Token Expired"}), 400
@@ -205,7 +55,7 @@ def netBankingLogin():
         username = request.form.get('username')
         password = request.form.get('password')
         
-        conn = get_db_connection("banks")
+        conn = utils.get_db_connection("banks")
         cursor = conn.cursor(dictionary=True)
         
         table_name = session['mode_info'].get('data')
@@ -250,7 +100,7 @@ def netBankingLogin():
                 user_obj = None
                 
             login_user(user_obj)
-            createBankTransactionEntry(userName = current_user.username, bankID=session['mode_info'].get('data'))
+            utils.createBankTransactionEntry(userName = current_user.username, bankID=session['mode_info'].get('data'))
             return redirect(url_for('bank.netBankingMain'))
         else:
             flash('Invalid credentials')
@@ -264,7 +114,7 @@ def netBankingMain():
         return render_template('bankMain.html', user=current_user.accountName, amount=session['mode_info'].get('amount'), bankName=session['bankName'])
 
     if request.method == 'POST':
-        expirationTime = getExpirationTime(session['mode_info'].get('expirationTime'))
+        expirationTime = utils.getExpirationTime(session['mode_info'].get('expirationTime'))
         if expirationTime < datetime.now():
             return jsonify({"status": "failed", "description": "Token Expired"}), 400
             
@@ -283,7 +133,7 @@ def netBankingMain():
         
         if condition1 and condition2 and condition3:
 
-            return handleWithdrawal(mode="banks",
+            return utils.handleWithdrawal(mode="banks",
                                     mode_name="accountID",
                                     mode_no = current_user.accountID, 
                                     current_balance=current_user.accountBalance,
@@ -296,8 +146,8 @@ def netBankingMain():
         else:
             session['attempts'] -= 1
             if session['attempts'] <= 0:
-                updateBankTransactionEntry(status = "failed")
-                return notifyNexpay(status="failed")
+                utils.updateBankTransactionEntry(status = "failed")
+                return utils.notifyNexpay(status="failed")
             
             if not condition1 or not condition2:
                 error_message = f"Incorrect credentials. Attempts left: {session['attempts']}"
@@ -307,7 +157,7 @@ def netBankingMain():
             
             return render_template('bankMain.html', user=current_user.accountName, amount=session['mode_info'].get('amount'), bankName=session['bankName'], error=error_message)
     
-    return notifyNexpay(status="failed")
+    return utils.notifyNexpay(status="failed")
     # return jsonify({"status": "failed", "description": "Unexpected Error Occurred", "Location": "NetbankingMain"})
 
 @bank.route('/debitcard', methods=['GET', 'POST'])
@@ -317,7 +167,7 @@ def debitCard():
         return render_template('card.html', amount = session['mode_info'].get('amount'), cardBrand = session['mode_info'].get('data'), cardNo = "debitCardNo")
     
     if request.method == 'POST':
-        expirationTime = getExpirationTime(session['mode_info'].get('expirationTime'))
+        expirationTime = utils.getExpirationTime(session['mode_info'].get('expirationTime'))
         if expirationTime < datetime.now():
             return jsonify({"status": "failed", "description": "Token Expired"}), 400
         
@@ -331,14 +181,14 @@ def debitCard():
 
         print(inputDebitCardNo, inputExpiryDate, inputCVV)
         
-        user = getCardDetails(tableName=session['mode_info'].get('mode'),
+        user = utils.getCardDetails(tableName=session['mode_info'].get('mode'),
                               inputCardNo=inputDebitCardNo,
                               inputExpiryDate=inputExpiryDate,
                               inputCVV=inputCVV
                               )
         
         if user:
-            currentUserDetails = getCurrentBalanceAndUserName(mode = "debitCardNo",
+            currentUserDetails = utils.getCurrentBalanceAndUserName(mode = "debitCardNo",
                                                               mode_no = inputDebitCardNo,
                                                               bankName = user['bankName']
                                                               )
@@ -346,11 +196,11 @@ def debitCard():
             currentBalance = currentUserDetails['accountBalance']
             userName = currentUserDetails['userName']
             
-            createBankTransactionEntry(userName=userName, bankID=user['bankName'])
+            utils.createBankTransactionEntry(userName=userName, bankID=user['bankName'])
             
         if user and currentBalance >= amount:
 
-            return handleWithdrawal(mode="banks",
+            return utils.handleWithdrawal(mode="banks",
                                     mode_name="debitCardNo",
                                     mode_no = inputDebitCardNo, 
                                     current_balance=currentBalance,
@@ -363,16 +213,16 @@ def debitCard():
         else:
             session['attempts'] -= 1
             if session['attempts'] <= 0:
-                createBankTransactionEntry()
-                updateBankTransactionEntry(status = "failed")
+                utils.createBankTransactionEntry()
+                utils.updateBankTransactionEntry(status = "failed")
                 logout_user()
-                return notifyNexpay(status="failed")         
+                return utils.notifyNexpay(status="failed")         
             if not user:
                 error_message = f"Incorrect credentials. Attempts left: {session['attempts']}"
             else:
                 error_message = f"Insufficient balance. Please check your account balance and try again. Attempts left: {session['attempts']}"
             return render_template('card.html', amount = session['mode_info'].get('amount'), cardBrand = session['mode_info'].get('data'), cardNo = "debitCardNo", error=error_message)
-    return notifyNexpay(status="failed")
+    return utils.notifyNexpay(status="failed")
     # return jsonify({"status": "failed", "description": "Unexpected Error Occurred", "Location": "debitCard"})
 
 
@@ -383,7 +233,7 @@ def creditCard():
         return render_template('card.html', amount = session['mode_info'].get('amount'), cardBrand = session['mode_info'].get('data'), cardNo = "creditCardNo")
     
     if request.method == 'POST':
-        expirationTime = getExpirationTime(session['mode_info'].get('expirationTime'))
+        expirationTime = utils.getExpirationTime(session['mode_info'].get('expirationTime'))
         if expirationTime < datetime.now():
             return jsonify({"status": "failed", "description": "Token Expired"}), 400
         
@@ -397,14 +247,14 @@ def creditCard():
 
         print(inputCreditCardNo, inputExpiryDate, inputCVV)
         
-        user = getCardDetails(tableName=session['mode_info'].get('mode'),
+        user = utils.getCardDetails(tableName=session['mode_info'].get('mode'),
                               inputCardNo=inputCreditCardNo,
                               inputExpiryDate=inputExpiryDate,
                               inputCVV=inputCVV
                               )
         
         if user:
-            currentUserDetails = getCurrentBalanceAndUserName(mode = "creditCardNo",
+            currentUserDetails = utils.getCurrentBalanceAndUserName(mode = "creditCardNo",
                                                               mode_no = inputCreditCardNo,
                                                               bankName = user['bankName']
                                                               )
@@ -412,11 +262,11 @@ def creditCard():
             currentBalance = user['creditBalance']
             userName = currentUserDetails['userName']
             
-            createBankTransactionEntry(userName=userName, bankID=user['bankName'])
+            utils.createBankTransactionEntry(userName=userName, bankID=user['bankName'])
             
         if user and currentBalance >= amount:
 
-            return handleWithdrawal(mode="othermodes",
+            return utils.handleWithdrawal(mode="othermodes",
                                     mode_name="creditCardNo",
                                     mode_no = inputCreditCardNo, 
                                     current_balance=currentBalance,
@@ -430,16 +280,16 @@ def creditCard():
         else:
             session['attempts'] -= 1
             if session['attempts'] <= 0:
-                createBankTransactionEntry()
-                updateBankTransactionEntry(status = "failed")
+                utils.createBankTransactionEntry()
+                utils.updateBankTransactionEntry(status = "failed")
                 logout_user()
-                return notifyNexpay(status="failed")         
+                return utils.notifyNexpay(status="failed")         
             if not user:
                 error_message = f"Incorrect credentials. Attempts left: {session['attempts']}"
             else:
                 error_message = f"Insufficient Credit Balance. Please check your Credit balance and try again. Attempts left: {session['attempts']}"
             return render_template('card.html', amount = session['mode_info'].get('amount'), cardBrand = session['mode_info'].get('data'), cardNo = "creditCardNo", error=error_message)
-    return notifyNexpay(status="failed")
+    return utils.notifyNexpay(status="failed")
 
 
 @bank.route('/logout')

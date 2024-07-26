@@ -6,61 +6,13 @@ body {
     height: 100vh;
     padding: 2rem;
     font-family: "Work Sans", sans-serif;
-    /* firefox 3.6+ */
-    background: -moz-radial-gradient(
-      circle at 27% 24%,
-      rgba(44, 62, 80, 1) 0%,
-      rgba(34, 49, 63, 1) 25%,
-      rgba(23, 32, 42, 1) 50%,
-      rgba(17, 24, 32, 1) 75%,
-      rgba(0, 0, 0, 1) 100%
-    );
-  
-    /* safari 5.1+, chrome 10+ */
-    background: -webkit-radial-gradient(
-      circle at 27% 24%,
-      rgba(44, 62, 80, 1) 0%,
-      rgba(34, 49, 63, 1) 25%,
-      rgba(23, 32, 42, 1) 50%,
-      rgba(17, 24, 32, 1) 75%,
-      rgba(0, 0, 0, 1) 100%
-    );
-  
-    /* opera 11.10+ */
-    background: -o-radial-gradient(
-      circle at 27% 24%,
-      rgba(44, 62, 80, 1) 0%,
-      rgba(34, 49, 63, 1) 25%,
-      rgba(23, 32, 42, 1) 50%,
-      rgba(17, 24, 32, 1) 75%,
-      rgba(0, 0, 0, 1) 100%
-    );
-  
-    /* ie 10+ */
-    background: -ms-radial-gradient(
-      circle at 27% 24%,
-      rgba(44, 62, 80, 1) 0%,
-      rgba(34, 49, 63, 1) 25%,
-      rgba(23, 32, 42, 1) 50%,
-      rgba(17, 24, 32, 1) 75%,
-      rgba(0, 0, 0, 1) 100%
-    );
-  
-    /* global 92%+ browsers support */
-    background: radial-gradient(
-      circle at 27% 24%,
-      rgba(44, 62, 80, 1) 0%,
-      rgba(34, 49, 63, 1) 25%,
-      rgba(23, 32, 42, 1) 50%,
-      rgba(17, 24, 32, 1) 75%,
-      rgba(0, 0, 0, 1) 100%
-    );
+    background: linear-gradient(135deg, #2c3e50, #34495e);
   }
   .form-container {
     background: #fff;
     padding: 50px;
-    border-radius: 2rem;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
     width: 100%;
     max-width: 700px;
     margin-top: 1rem;
@@ -96,7 +48,7 @@ body {
     padding: 12px;
     transition: background-color 0.3s ease;
     width: 100%;
-    border-radius: 10rem;
+    border-radius: 10px;
   }
   .btn-primary:hover {
     background-color: #062161;

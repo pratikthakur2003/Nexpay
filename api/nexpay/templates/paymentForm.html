@@ -5,6 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Payment Page</title>
   <link rel="stylesheet" href="{{ url_for('nexpay.static', filename='css/paymentForm.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+  <div class="container">
+    <span>
+      <!-- <img src="../assets/favicon.png" alt="logo"> -->
+      <!-- <img src="{{ url_for('nexpay.static', filename='assets/favicon.png') }}" alt="logo"> -->
+      <h1>Nexpay</h1>
+    </span>
+    <div class="tabs">
+      <div class="tab active" data-target="netbanking"><i class="fas fa-university"></i> Net Banking</div>
+      <div class="tab" data-target="creditcard"><i class="fas fa-credit-card"></i> Credit Card</div>
+      <div class="tab" data-target="debitcard"><i class="fas fa-credit-card"></i> Debit Card</div>
+<!--       <div class="tab" data-target="upi"><i class="fas fa-mobile-alt"></i> UPI</div> -->
+    </div>
+    <form id="paymentForm" action="/nexpay/api/contact_bank" method="post">
+      <div class="content active" id="netbanking">
+        <label for="bank">Choose your Bank:</label>
+        <select id="bank" name="bank">
+          <option value="abc">ABC Bank</option>
+          <option value="mno">MNO Bank</option>
+          <option value="xyz">XYZ Bank</option>
+        </select>
+      </div>
+      <div class="content" id="creditcard">
+        <label for="creditCardBrand">Choose your Credit Card Brand:</label>
+        <select id="creditCardBrand" name="creditCardBrand">
+          <option id="cc1" value="Credit Card 1">Credit Card 1</option>
+          <option id="cc2" value="Credit Card 2">Credit Card 2</option>
+          <option id="cc3" value="Credit Card 3">Credit Card 3</option>
+        </select>
+      </div>
+      <div class="content" id="debitcard">
+        <label for="debitCardBrand">Choose your Debit Card Brand:</label>
+        <select id="debitCardBrand" name="debitCardBrand">
+          <option id="db1" value="Debit Card 1">Debit Card 1</option>
+          <option id="db2" value="Debit Card 2">Debit Card 2</option>
+          <option id="db3" value="Debit Card 3">Debit Card 3</option>
+        </select>
+      </div>
+<!--       <div class="content" id="upi">
+        <label for="upi">UPI ID:</label>
+        <input type="text" id="upi" name="upi" placeholder="Enter your UPI ID">
+      </div> -->
+      <input type="hidden" class="hiddenData" name="token" value="{{ token }}">
+      <input type="hidden" class="hiddenData" name="orderID" value="{{ orderID }}">
+      <input type="hidden" class="hiddenData" name="amount" value="{{ amount }}">
+      <button type="submit" class="pay-now">Pay Now (₹{{ amount }})</button>
+    </form>
+  </div>
+
+  <script src="{{ url_for('nexpay.static', filename='js/paymentForm.js') }}"></script>
+</body>
+</html>
+
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment Page</title>
+  <link rel="stylesheet" href="{{ url_for('nexpay.static', filename='css/paymentForm.css') }}">
 </head>
 <body>
   <div class="container">
@@ -52,4 +119,4 @@
 
   <script src="{{ url_for('nexpay.static', filename='js/paymentForm.js') }}"></script>
 </body>
-</html>
+</html> -->
