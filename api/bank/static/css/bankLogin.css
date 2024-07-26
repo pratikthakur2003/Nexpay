@@ -93,7 +93,12 @@ background: radial-gradient(
   max-width: 32rem;
   padding: 3rem 2rem;
   border-radius: 2rem;
-  height: 25rem;
+  height: fit-content;
+}
+
+.my-form ul {
+  color: red;
+  font-size: 1.25rem;
 }
 
 .my-form__button {

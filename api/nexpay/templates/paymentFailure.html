@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Failure</title>
+    <link rel="stylesheet" href="{{ url_for('nexpay.static', filename='css/paymentFailure.css') }}">
+</head>
+<body>
+    <div class="failure-container">
+        <div class="failure-content">
+            <h1>Transaction Failed...!!!</h1>
+            <p>Your Transaction has failed. Please go back to the main website.</p>
+            <a href="{{ callbackURL }}" class="btn">Return to Home</a>
+        </div>
+    </div>
+</body>
+</html>
