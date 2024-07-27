@@ -1,0 +1,35 @@
+.homePage {
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.homeImage {
+    height: 500px;
+    width: 100%;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+    z-index: -1;
+    margin-bottom: -150px;
+}
+
+.home_row {
+    display: flex;
+    z-index: 1;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+@media only screen and (max-width:600px) {
+    .homeImage {
+        max-width: fit-content;
+        margin-bottom: auto;
+    }
+
+    .home_row {
+        max-width: fit-content;
+    }
+
+    #samsung {
+        max-width: 400px;
+    }
+}

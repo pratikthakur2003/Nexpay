@@ -1,0 +1,45 @@
+/* .checkout{
+    
+} */
+
+.checkout_title{
+    margin-right: 10px;
+    padding: 10px;
+    border-bottom: 1px solid lightgray;
+}
+
+.checkoutAd{
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.checkout_total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 20px;
+    border-top: 1px solid #ddd;
+}
+
+.checkout_total h3 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.checkout_total button {
+    background-color: #f0c14b;
+    border: 1px solid;
+    border-color: #a88734 #9c7e31 #846a29;
+    padding: 10px 20px;
+    color: #111;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.checkout_total button:hover {
+    background-color: #ddb347;
+}
+
+
