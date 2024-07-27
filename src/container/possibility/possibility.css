@@ -1,0 +1,206 @@
+.service-container {
+    width: 100%;
+    padding: 2rem;
+    background: var(--color-bg);  }
+  
+  .service-heading {
+    font-size: 2rem;
+    text-align: start;
+    margin-bottom: 2rem;
+    
+  }
+  
+  .service-content {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+  }
+  
+  .service-image-section {
+    flex: 1.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .service-image-card {
+    background-color: var(--color-footer);
+    border-radius: 10px;
+    box-shadow: 10px 10px 20px rgba(0, 0, 0, 1.2);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 90%;
+    width: 70%;
+  }
+  
+  .service-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .service-list-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+  }
+  
+  .service-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: var(--color-footer);;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    width: 80%;
+    height: 30%;
+    
+  }
+  
+  .service-card.selected {
+    background: radial-gradient(circle at 30% -100%, #042c54 25%, rgba(4, 44, 84, 1) 85%, rgba(27, 120, 222, 1) 100%);
+    color: rgb(255, 255, 255); /* Text color for selected card */
+  }
+  
+  .service-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .service-icon {
+    font-size: 2rem;
+    margin-right: 1rem;
+  }
+  
+  .service-info h2 {
+    font-size: 1.3rem;
+    margin: 0;
+    color: inherit; 
+    font-weight: 400px;
+    font-family:var(--font-family) ;
+
+    
+  }
+  
+  .service-info p {
+    font-size: 1rem;
+    color: inherit; /* Inherit color from the selected class */
+    font-family:var(--font-family) ;
+  }
+  
+  
+  
+  .service-info a:hover {
+    text-decoration: underline;
+  }
+
+
+  @media screen and (max-width: 1200px) {
+    .service-content {
+      flex-direction: row; /* Maintain horizontal alignment for larger screens */
+      gap: 2rem;
+    }
+  }
+  
+  @media screen and (max-width: 900px) {
+    .service-content {
+      flex-direction: column; /* Maintain horizontal alignment for medium screens */
+      gap: 2rem;
+    }
+
+    .service-card{
+        width: 100%;
+        height: 200px;
+    }
+  
+    .service-image-section,
+    .service-list-section {
+      width: 100%; /* Ensure both sections take equal space */
+      
+    }
+
+    .vertical-scroll-bar{
+        display: none;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .service-content {
+      flex-direction: column; /* Stack sections vertically for small screens */
+      gap: 1rem;
+      
+    }
+    .service-list-section{
+        width: fit-content;
+    }
+    .service-card{
+        height: fit-content;
+    }
+    .service-heading {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      
+    }
+  
+    .service-image-card {
+      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2); /* Reduce shadow size */
+      
+    }
+  
+    .service-info h2 {
+      font-size: 1.25rem;
+    }
+  
+    .service-info p {
+      font-size: 0.9rem;
+    }
+  
+    .service-card {
+      flex-direction: column; /* Align card content vertically on small screens */
+      align-items: flex-start;
+    }
+  
+    .service-icon {
+      margin-bottom: 0.5rem;
+    }
+
+    .vertical-scroll-bar{
+        display: none;
+    }
+  }
+
+
+.vertical-scroll-bar {
+    width: 3px;
+    background-color: #ccc;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-radius: 5px;
+    scroll-behavior: smooth;
+  }
+  
+  .scroll-indicator {
+    width: 3px;
+    height: 25%;
+    background-color: transparent;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.3s, height 0.3s;
+    scroll-behavior: smooth;
+  }
+  
+  .scroll-indicator.active {
+    background: radial-gradient(circle at 30% -100%, #042c54 25%, rgba(4, 44, 84, 1) 85%, rgba(27, 120, 222, 1) 100%);
+    height: 30%;
+    scroll-behavior: smooth;
+  }
