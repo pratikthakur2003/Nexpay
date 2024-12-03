@@ -13,82 +13,169 @@ NexPay is a comprehensive payment gateway simulator designed to replicate the fu
 - [Project Structure](#project-structure)
 - [Installation](#installation)
 - [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Contributing](#contributing)
 
 ## Features
 
-- **User Authentication**: Secure user signup and login process.
-- **API Key Generation**: Developers can generate API keys for integrating NexPay with their websites.
-- **Payment Modes**: Supports net banking, debit card, and credit card payment modes.
-- **Transaction Processing**: Simulates transaction processing and redirects users to success or failure pages based on transaction outcomes.
-- **Dashboard**: Provides a dashboard for users to view transaction history and statuses.
-- **Encryption**: Ensures data security through encryption.
-- **API Abstraction**: Separates Nexpay API and Bank API for modularity and security.
+### Core Features
+- **User Authentication**: 
+  - Secure user signup and login process
+  - Role-based access control
+  - Session management
+  - Password encryption and security
+
+- **API Integration**:
+  - API key generation and management
+  - Secure endpoint access
+  - Rate limiting
+  - Webhook support for transaction notifications
+
+- **Payment Processing**:
+  - Multiple payment methods support:
+    - Credit Card
+    - Debit Card
+    - Net Banking
+  - Real-time transaction simulation
+  - Custom success/failure scenarios
+  - Transaction status tracking
+
+- **Security Features**:
+  - End-to-end encryption
+  - Public/Private key infrastructure
+  - Secure data transmission
+  - PCI DSS compliance simulation
+
+- **Dashboard & Analytics**:
+  - Transaction history
+  - Payment analytics
+  - Success/failure metrics
+  - Settlement reports
+
+### Technical Features
+- RESTful API architecture
+- Modular codebase structure
+- Comprehensive error handling
+- Detailed logging system
+- Database optimization
+- Caching mechanisms
 
 ## Technologies Used
 
-- **Frontend**: HTML, CSS, JavaScript, React.js
-- **Backend**: Flask, MySQL
-- **Others**: MERN Stack (MongoDB, Express.js, React.js, Node.js)
+### Frontend
+- HTML5, CSS3, JavaScript (ES6+)
+- React.js for dynamic UI components
+- Material-UI for component styling
+- Redux for state management
+- Axios for API requests
+
+### Backend
+- Python 3.8+
+- Flask framework
+- MySQL database
+- SQLAlchemy ORM
+- JWT for authentication
+- Bcrypt for password hashing
+
+### Development Tools
+- Git for version control
+- Docker for containerization
+- pytest for unit testing
+- Swagger for API documentation
+- Black for code formatting
 
 ## Team Members
 
-- **Pratik Thakur (Team Leader)**: Backend development, Nexpay API, Bank API, Database schema.
-- **Ovilash Jalui**: UI/UX design, Nexpay Dashboard development.
-- **Aayush Singh**: E-commerce website development, Nexpay integration.
-- **Anjali Daftari**: E-commerce website creation (MERN stack).
-- **Pratigna Hirani**: Nexpay landing page design and development, e-commerce contributions.
+Our dedicated team of developers bringing NexPay to life:
+
+- **Pratik Thakur (Team Leader)**
+  - Backend architecture
+  - API development
+  - Database design
+  - System integration
+
+- **Ovilash Jalui**
+  - UI/UX design
+  - Dashboard implementation
+  - User experience optimization
+
+- **Aayush Singh**
+  - E-commerce integration
+  - Payment flow implementation
+  - Testing and documentation
+
+- **Anjali Daftari**
+  - MERN stack development
+  - Frontend optimization
+  - Component architecture
+
+- **Pratigna Hirani**
+  - Landing page design
+  - Frontend development
+  - UI component creation
 
 ## Project Structure
-        NexPay/
-        ├── .gitignore
-        ├── api
-        │ ├── bank
-        │ │ ├── hash
-        │ │ │ ├── decrypt.py
-        │ │ │ ├── private.pem
-        │ │ ├── routes.py
-        │ │ ├── static
-        │ │ │ ├── css
-        │ │ │ │ ├── bankLogin.css
-        │ │ │ │ ├── bankMain.css
-        │ │ │ │ ├── card.css
-        │ │ │ ├── js
-        │ │ │ ├── bankLogin.js
-        │ │ │ ├── bankMain.js
-        │ │ │ ├── card.js
-        │ │ ├── templates
-        │ │ │ ├── bankLogin.html
-        │ │ │ ├── bankMain.html
-        │ │ │ ├── card.html
-        │ │ ├── utils.py
-        │ │ └── init.py
-        │ ├── nexpay
-        │ │ ├── assets
-        │ │ │ └── favicon.png
-        │ │ ├── hash
-        │ │ │ ├── encrypt.py
-        │ │ │ ├── public.pem
-        │ │ ├── routes.py
-        │ │ ├── static
-        │ │ │ ├── css
-        │ │ │ │ ├── paymentFailure.css
-        │ │ │ │ ├── paymentForm.css
-        │ │ │ │ ├── paymentSuccess.css
-        │ │ │ ├── js
-        │ │ │ └── paymentForm.js
-        │ │ ├── templates
-        │ │ │ ├── allTables.html
-        │ │ │ ├── paymentFailure.html
-        │ │ │ ├── paymentForm.html
-        │ │ │ ├── paymentSuccess.html
-        │ │ ├── utils.py
-        │ │ └── init.py
-        ├── app
-        │ ├── models.py
-        │ ├── routes.py
-        │ └── init.py
-        ├── database.sql
-        ├── requirements.txt
-        └── run.py
+
+```
+NexPay/
+├── .gitignore                # Git ignore configuration
+├── api/                      # API implementation directory
+│   ├── bank/                # Bank API simulation
+│   │   ├── hash/            # Encryption/decryption utilities
+│   │   ├── routes.py        # Bank API routes
+│   │   ├── static/          # Static assets for bank interface
+│   │   ├── templates/       # HTML templates for bank pages
+│   │   └── utils.py         # Utility functions
+│   └── nexpay/              # NexPay core API
+│       ├── assets/          # Application assets
+│       ├── hash/            # Security implementations
+│       ├── routes.py        # Main API routes
+│       ├── static/          # Static files
+│       ├── templates/       # HTML templates
+│       └── utils.py         # Helper functions
+├── app/                      # Main application directory
+│   ├── models.py            # Database models
+│   ├── routes.py            # Application routes
+│   └── __init__.py          # Application initialization
+├── database.sql             # Database schema
+├── requirements.txt         # Python dependencies
+└── run.py                   # Application entry point
+```
+
+## Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/pratikthakur2003/NexPay.git
+cd NexPay
+```
+
+2. Create and activate virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Initialize the database:
+```bash
+mysql -u your_username -p < database.sql
+```
+
+## Usage
+
+1. Start the application:
+```bash
+python run.py
+```
+
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
